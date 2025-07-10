@@ -1,7 +1,7 @@
 import pygame
 import random
-from asteroids import Asteroid
-from constants import *
+from objects.asteroids import Asteroid
+from settings.constants import *
 
 
 class AsteroidField(pygame.sprite.Sprite):

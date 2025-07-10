@@ -1,4 +1,4 @@
-from circleshape import CircleShape
+from objects.circleshape import CircleShape
 import pygame
 
 class Shot(CircleShape):
