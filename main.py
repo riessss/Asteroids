@@ -1,21 +1,50 @@
 import sys
 import pygame
-from settings.constants import *
+from game.constants import *
 from objects.player import Player
 from objects.asteroids import Asteroid
 from objects.asteroidfield import AsteroidField
 from objects.shot import Shot
 
-def main():
-    pygame.init()
-    pygame.font.init()
-    pygame.display.set_caption('Asteroids')
+def settings():
+    pass
 
-    font = pygame.font.SysFont('dejavusans', 24)
-    screen = pygame.display.set_mode(
-        (SCREEN_WIDTH, SCREEN_HEIGHT))
-    stars_image = pygame.image.load('assets/asteroids-game.jpg').convert()
-    background_image = pygame.transform.scale_by(stars_image, 0.25)
+def return_score_board():
+    pass
+
+def update_score_board():
+    # Datetime
+    # Name
+    # In top 10?
+    # Sort in top 10
+    pass
+
+def menu_loop(screen, background_image):
+    # TODO: Use update_score_board
+    # update_score_board(score, name)
+
+    menu_screen = pygame.Rect(
+            (SCREEN_WIDTH/4, SCREEN_HEIGHT/4, 
+             SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2),
+            )
+    
+    screen.fill((0,0,0))
+    screen.blit(background_image, (0,0))
+
+    # TODO: create the menu display and go to the game
+
+    pygame.draw.rect(screen, (0,255,0), menu_screen, 0)
+    pygame.display.flip()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.K_SPACE:
+                return main()
+
+def game_loop(screen, font, background_image):
     life_image = pygame.image.load('assets/life.png').convert_alpha()
     life_image = pygame.transform.scale(life_image,(50,50))
 
@@ -42,6 +71,7 @@ def main():
     hits = 0
     lives = 3
 
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -55,7 +85,7 @@ def main():
                 lives -= 1
                 if lives == 0:
                     print("Game over!")
-                    sys.exit()
+                    return menu_loop(screen, background_image)
         
         for asteroid in asteroids:
             for shot in shots:
@@ -81,6 +111,24 @@ def main():
         pygame.display.flip()
         dt = clock.tick(60) / 1000
 
+def main():
+    pygame.init()
+    pygame.font.init()
+    pygame.display.set_caption('Asteroids')
+
+    font = pygame.font.SysFont('dejavusans', 24)
+    screen = pygame.display.set_mode(
+        (SCREEN_WIDTH, SCREEN_HEIGHT))
+    state = 'game'
+
+    stars_image = pygame.image.load('assets/asteroids-game.jpg').convert()
+    background_image = pygame.transform.scale_by(stars_image, 0.25)
+
+    while True:
+        if state == 'game':
+            state = game_loop(screen, font, background_image)
+        if state == 'menu':
+            state = menu_loop(screen, background_image)
 
 
 if __name__ == "__main__":
