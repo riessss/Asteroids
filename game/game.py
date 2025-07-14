@@ -6,11 +6,11 @@ from objects.asteroids import Asteroid
 from objects.asteroidfield import AsteroidField
 from objects.shot import Shot
 
-def game_loop(screen, font, background_image):
+
+def game_loop(level, clock, screen, font, background_image):
     life_image = pygame.image.load('assets/life.png').convert_alpha()
     life_image = pygame.transform.scale(life_image,(50,50))
 
-    clock = pygame.time.Clock()
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
 
@@ -27,7 +27,7 @@ def game_loop(screen, font, background_image):
     player = Player(x, y, radius=PLAYER_RADIUS)
 
     dt = 0
-    asteroid_field = AsteroidField()
+    asteroid_field = AsteroidField(level)
 
     score = 0
     hits = 0

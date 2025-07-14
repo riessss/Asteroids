@@ -1,11 +1,9 @@
 import sys
 import pygame
-import pygame_gui
 from .constants import *
 
 
-def return_score_board(screen, background_image, font):
-    clock = pygame.time.Clock()
+def return_score_board(clock, screen, background_image, font):
 
     nr1_rect = pygame.Rect(
             (SCREEN_WIDTH/4, SCREEN_HEIGHT/4.5, 
@@ -45,8 +43,8 @@ def return_score_board(screen, background_image, font):
 
         pygame.draw.polygon(screen, (0, 255, 0), arrow_points)
 
-        pygame.display.flip()
-        clock.tick(60) 
+        pygame.display.flip() 
+        clock.tick(60) / 1000
 
     return nr1_rect
     
@@ -58,7 +56,7 @@ def update_score_board():
     # Sort in top 10
     pass
 
-def menu_loop(screen, background_image, font):
+def menu_loop(level, clock, screen, background_image, font):
     # TODO: Use update_score_board
     # update_score_board(score, name)
     
@@ -83,9 +81,7 @@ def menu_loop(screen, background_image, font):
     level_text = font.render('Medium', True, (0,255,0))
     level_text_rect = level_text.get_rect(center=settings_rect.center)
 
-    level = 2
     menu_running = True
-    clock = pygame.time.Clock()
 
     while menu_running:
         for event in pygame.event.get():
@@ -103,10 +99,10 @@ def menu_loop(screen, background_image, font):
                 if play_rect.collidepoint(pygame.mouse.get_pos()):
                     state = "game"
                     menu_running = False
-                    return state
+                    return state, level
                 if score_rect.collidepoint(pygame.mouse.get_pos()):
                     menu_running = False
-                    return return_score_board(screen, background_image, font)
+                    return return_score_board(clock, screen, background_image, font)
                 if settings_rect.collidepoint(pygame.mouse.get_pos()):
                     level += 1
                     if level > 3:
@@ -130,4 +126,4 @@ def menu_loop(screen, background_image, font):
         pygame.draw.rect(screen, (255,255,255), settings_rect, 2)
         screen.blit(level_text, level_text_rect)
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(60) / 1000
